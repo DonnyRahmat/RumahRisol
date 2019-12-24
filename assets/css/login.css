@@ -1,0 +1,118 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f5f8fd;
+}
+
+.box h1{
+  color: #02b875;
+  font-family: monospace;
+  font-size:5vw;
+}
+
+.box{
+  width: 300px;
+  padding: 40px;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #413e66;
+  text-align: center;
+}
+
+.box input[type = "text"], .box input[type = "password"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #02b875;
+  padding: 10px 10px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 20px;
+  transition: 0.25s;
+}
+
+.box input[type = "text"]:focus, .box input[type = "password"]:focus{
+  width: 250px;
+  transition: 0.25s;
+
+}
+
+.box input[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #02b875;
+  padding: 10px 40px;
+  outline: none;
+  color: white;
+  border-radius: 20px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.box input[type = "submit"]:hover{
+  background: #02b875;
+}
+
+@media screen and (max-width:320px) {
+
+  .box{
+    width: 220px;
+    padding: 40px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #413e66;
+    text-align: center;
+  }
+
+  .box input[type = "text"], .box input[type = "password"]{
+    border:0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #02b875;
+    padding: 10px 10px;
+    width: 180px;
+    outline: none;
+    color: white;
+    border-radius: 20px;
+    transition: 0.25s;
+  }
+
+  .box input[type = "text"]:focus, .box input[type = "password"]:focus{
+    width: 200px;
+    transition: 0.25s;
+
+  }
+
+  .box input[type = "submit"]{
+    border:0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #02b875;
+    padding: 10px 40px;
+    outline: none;
+    color: white;
+    border-radius: 20px;
+    transition: 0.25s;
+    cursor: pointer;
+  }
+
+  .box input[type = "submit"]:hover{
+    background: #02b875;
+  }
+
+}
