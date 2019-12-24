@@ -46,7 +46,7 @@ if(isset($_POST["idbarang"]))
  // }
  require_once('../../config/db_conf.php');
  try {
-   // $date = date("Y-m-d H:i:s");
+   $date = date("Y-m-d H:i:s");
    $tot = "SELECT max(id_brgmsk) as idm from t_brg_msk";
    $stmt1 = $pdo->prepare($tot);
    $stmt1->execute();
@@ -58,20 +58,20 @@ if(isset($_POST["idbarang"]))
      $idmax = $max->idm+1;
    }
    //
-   // $total = 0;
-   //  foreach($hrg AS $k=>$v){
-   //    $total += $v*$jml[$k];
-   //  }
-   //  $tott = $total;
-   //
-   // $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, total_bayar, id_user) values (:idb, :tgl, :total, :user)";
-   // $stmt2 = $pdo->prepare($sqlInput);
-   // $stmt2->bindParam(':idb', $idmax);
-   // $stmt2->bindParam(':tgl', $date);
-   // $stmt2->bindParam(':total', $tott);
-   // $stmt2->bindParam(':user', $_SESSION['id_user']);
-   // $stmt2->execute();
-   // $stmt2 = null;
+   $total = 0;
+    foreach($hrg AS $k=>$v){
+      $total += $v*$jml[$k];
+    }
+    $tott = $total;
+
+   $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, total_bayar, id_user) values (:idb, :tgl, :total, :user)";
+   $stmt2 = $pdo->prepare($sqlInput);
+   $stmt2->bindParam(':idb', $idmax);
+   $stmt2->bindParam(':tgl', $date);
+   $stmt2->bindParam(':total', $tott);
+   $stmt2->bindParam(':user', $_SESSION['id_user']);
+   $stmt2->execute();
+   $stmt2 = null;
    //
    // // $idb = $_POST["idbarang"];
    // $query = "INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk)
@@ -89,19 +89,21 @@ if(isset($_POST["idbarang"]))
    // }
    // $stmt3 = null;
 
-    $sql = $pdo->prepare("INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk) VALUES(:,:nama,:telp,:alamat)");
-    $index = 0; // Set index array awal dengan 0
-    foreach($nis as $datanis){ // Kita buat perulangan berdasarkan nis sampai data terakhir
-      $sql->bindParam(':nis', $datanis); // Set data nis
-      $sql->bindParam(':nama', $nama[$index]); // Ambil dan set data nama sesuai index array dari $index
-      $sql->bindParam(':telp', $telp[$index]); // Ambil dan set data telepon sesuai index array dari $index
-      $sql->bindParam(':alamat', $alamat[$index]); // Ambil dan set data alamat sesuai index array dari $index
-      $sql->execute(); // Eksekusi query insert
+   $sql = $pdo->prepare("INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk) VALUES(:idb, :idm, :jml, :hrg)");
+   $index = 0; // Set index array awal dengan 0
+   foreach($idb as $idbar){ // Kita buat perulangan berdasarkan nis sampai data terakhir
+     $sql->bindParam(':idb', $idbar); // Set data nis
+     $sql->bindParam(':idm', $idmax); // Ambil dan set data nama sesuai index array dari $index
+     $sql->bindParam(':jml', $jml[$index]); // Ambil dan set data telepon sesuai index array dari $index
+     $sql->bindParam(':hrg', $hrg[$index]); // Ambil dan set data alamat sesuai index array dari $index
+     $sql->execute(); // Eksekusi query insert
 
-      $index++; // Tambah 1 setiap kali looping
-    }
+     $index++; // Tambah 1 setiap kali looping
+   }
 
-   var_dump($jml);
+   echo "Input Tersimpan";
+
+   // var_dump($jml);
 
  } catch (\Exception $e) {
    echo $e->getMessage();
