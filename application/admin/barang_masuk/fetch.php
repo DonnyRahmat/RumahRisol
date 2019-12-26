@@ -23,16 +23,17 @@ $request=$_REQUEST;
 // );  //create column like table in database
 
 $col =array(
-    0   =>  'id_barang',
+    0   =>  'id_brgmsk',
     1   =>  'nama_barang',
-    2   =>  'satuan',
-    3   =>  'ukuran',
-    4   =>  'stok',
-    5   =>  'stok_min',
-    6   =>  'harga_beli'
+    2   =>  'harga_brgmsk',
+    3   =>  'jml_brgmsk',
+    4   =>  'total_bayar',
+    5   =>  'tgl_brg_msk',
+    6   =>  'fullname'
 );
 
-$sql ="SELECT * FROM t_barang";
+// $sql ="SELECT * FROM t_barang";
+$sql = "SELECT bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user";
 $query=mysqli_query($con,$sql);
 
 $totalData=mysqli_num_rows($query);
@@ -40,11 +41,11 @@ $totalData=mysqli_num_rows($query);
 $totalFilter=$totalData;
 
 //fitur search
-$sql ="SELECT * FROM t_barang WHERE 1=1";
+$sql ="SELECT bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user WHERE 1=1";
 if(!empty($request['search']['value'])){
-    $sql.=" AND (id_barang Like '".$request['search']['value']."%' ";
-    $sql.=" OR nama_barang Like '".$request['search']['value']."%' ";
-    $sql.=" OR satuan Like '".$request['search']['value']."%' )";
+    $sql.=" AND (bm.id_brgmsk Like '".$request['search']['value']."%' ";
+    $sql.=" OR b.nama_barang Like '".$request['search']['value']."%' ";
+    $sql.=" OR bm.user Like '".$request['search']['value']."%' )";
 }
 $query=mysqli_query($con,$sql);
 $totalData=mysqli_num_rows($query);

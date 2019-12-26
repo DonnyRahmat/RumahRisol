@@ -109,13 +109,13 @@ input[type=number]::-webkit-inner-spin-button {
                 <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>ID Barang</th>
+                                <th>ID Barang Masuk</th>
                                 <th>Nama Barang</th>
-                                <th>Satuan</th>
-                                <th>Ukuran</th>
-                                <th>Stok</th>
-                                <th>Min Stok</th>
-                                <th>Harga</th>
+                                <th>Harga Satuan</th>
+                                <th>Jml Brg Masuk</th>
+                                <th>Total Bayar</th>
+                                <th>Brg Msk Tgl</th>
+                                <th>User</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
