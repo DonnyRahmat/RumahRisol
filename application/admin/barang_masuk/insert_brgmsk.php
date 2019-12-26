@@ -46,18 +46,20 @@ if(isset($_POST["idbarang"]))
  // }
  require_once('../../config/db_conf.php');
  try {
-   $date = date("Y-m-d H:i:s");
-   $tot = "SELECT max(id_brgmsk) as idm from t_brg_msk";
+   $tglM = date("Y-m-d H:i:s");
+   $date = date("dmY");
+   $tot = "SELECT max(mid(id_brgmsk, 13)) as idm from t_brg_msk";
    $stmt1 = $pdo->prepare($tot);
    $stmt1->execute();
-   $max = $stmt1->fetch(PDO::FETCH_OBJ);
-   $idmax = $max->idm;
-   if ($idmax == 0) {
-     $idmax = 1;
-   }elseif ($idmax >= 0) {
-     $idmax = $max->idm+1;
+   $max = $stmt1->fetchObject();
+   if (is_null($max->idm)){
+     $idmax = "BM/".$date."/1";
+   }elseif ($max->idm >= 1) {
+     $val = $max->idm+1;
+     $idmax = "BM/".$date."/".$val;
    }
-   //
+   $stmt1 = null;
+
    $total = 0;
     foreach($hrg AS $k=>$v){
       $total += $v*$jml[$k];
@@ -67,13 +69,13 @@ if(isset($_POST["idbarang"]))
    $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, total_bayar, id_user) values (:idb, :tgl, :total, :user)";
    $stmt2 = $pdo->prepare($sqlInput);
    $stmt2->bindParam(':idb', $idmax);
-   $stmt2->bindParam(':tgl', $date);
+   $stmt2->bindParam(':tgl', $tglM);
    $stmt2->bindParam(':total', $tott);
    $stmt2->bindParam(':user', $_SESSION['id_user']);
    $stmt2->execute();
    $stmt2 = null;
-   //
-   // // $idb = $_POST["idbarang"];
+
+   // $idb = $_POST["idbarang"];
    // $query = "INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk)
    //            VALUES  (:id2, :idm2, :jml, :hrg)";
    //
@@ -101,7 +103,7 @@ if(isset($_POST["idbarang"]))
      $index++; // Tambah 1 setiap kali looping
    }
 
-   echo "Input Tersimpan";
+   echo "Input Tersimpan.";
 
    // var_dump($jml);
 
