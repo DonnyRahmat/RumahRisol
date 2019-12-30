@@ -53,7 +53,7 @@
 
   	$nama_barang = $_POST['nama_barang'];
   	$satuan = $_POST['satuan'];
-    $ukuran = $_POST['ukuran']." ".$_POST['satuan'];
+    $ukuran = $_POST['ukuran'];
   	$stok = $_POST['stok'];
     $stok_min = $_POST['stok_min'];
   	$harga_beli  = $_POST['harga_beli'];

@@ -62,8 +62,8 @@ while($row=mysqli_fetch_array($query)){
 
     // event on click delete dan update
     //$row[0] = id
-    $subdata[]='<button type="button" id="edit"  data-id="'.$row[0].'">Edit</button>
-                <button type="button" id="hapus" data-id="'.$row[0].'">Delete</button>';
+    $subdata[]='<button type="button" class="button warning" id="edit"  data-id="'.$row[0].'">Edit</button>
+                <button type="button" class="button alert" id="hapus" data-id="'.$row[0].'">Delete</button>';
                 //<a href="index.php?delete='.$row[0].'" onclick="return confirm(\'Are You Sure ?\')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash">&nbsp;</i>Delete</a>
     $data[]=$subdata;
 }

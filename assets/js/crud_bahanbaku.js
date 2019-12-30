@@ -99,11 +99,11 @@ $(document).ready(function(){
     idb = data[0];
     $('#nama_barang').val(data[1]);
     $('#satuan').val(data[2]);
-    var uk = data[3].match(/\d+/);
+    var uk = data[2].match(/\d+/);
     $('#ukuran').val(uk);
-    $('#stok').val(data[4]);
-    $('#stok_min').val(data[5]);
-    $('#harga_beli').val(data[6]);
+    $('#stok').val(data[3]);
+    $('#stok_min').val(data[4]);
+    $('#harga_beli').val(data[5]);
     $('#submit_btn').hide();
     $('#update').show();
 } );
