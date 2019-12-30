@@ -45,7 +45,7 @@ $sql ="SELECT bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.to
 if(!empty($request['search']['value'])){
     $sql.=" AND (bm.id_brgmsk Like '".$request['search']['value']."%' ";
     $sql.=" OR b.nama_barang Like '".$request['search']['value']."%' ";
-    $sql.=" OR bm.user Like '".$request['search']['value']."%' )";
+    $sql.=" OR u.fullname Like '".$request['search']['value']."%' )";
 }
 $query=mysqli_query($con,$sql);
 $totalData=mysqli_num_rows($query);

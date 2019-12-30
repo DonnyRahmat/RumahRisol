@@ -121,6 +121,12 @@ $('#addmore').click(function(){
     },
     success:function(data){
      console.log(data);
+     Metro.notify.create("Input barang masuk sukses", "Informasi", {cls: "success"});
+     $(".aut").empty();
+     var res = "<tr class='tr_input'><td><input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'><input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden></td><td><input type='text' class='stok' id='stok_1' readonly></td><td><input type='text' class='ukuran' id='ukuran_1' readonly></td><td><input type='number' class='harga_beli' name='harga_beli[]' id='harga_beli_1' ></td><td><input type='number' class='jml_brgmsk'name='jml_brgmsk[]'></td><td><input type='button' value='Delete' class='delete'></td></tr>";
+     $(".aut").append(res);
+     var table = $('#example').DataTable();
+     table.draw('page');
     }
    });
   });
