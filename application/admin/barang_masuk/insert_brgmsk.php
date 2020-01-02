@@ -112,4 +112,66 @@ if(isset($_POST["idbarang"]))
  }
 
 }
+
+// if(isset($_POST["updId"]))
+// {
+//  $query = "
+//  SELECT bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B
+//  inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang
+//  INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk
+//  inner join t_user U on BM.id_user=u.id_user
+//  WHERE DB.id_detil_brgmsk = '".$_POST["updId"]."'
+//  ";
+//  $statement = $connect->prepare($query);
+//  $statement->execute();
+//  while($row = $statement->fetch(PDO::FETCH_ASSOC))
+//  {
+//   $data[] = $row;
+//  }
+//  echo json_encode($data);
+// }
+
+if (isset($_POST["updId"])) {
+   $con = mysqli_connect("localhost", "root", "", "db_rumahrisol");
+   if (mysqli_connect_errno()) {
+      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+      exit();
+   }
+   $sql = "
+   SELECT db.id_detil_brgmsk, concat(b.ukuran, ' ', b.satuan) as uk, b.id_barang, bm.id_brgmsk, b.nama_barang, b.stok, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B
+   inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang
+   INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk
+   inner join t_user U on BM.id_user=u.id_user
+   WHERE DB.id_detil_brgmsk = '".$_POST["updId"]."'
+   ";
+
+   $result = mysqli_query($con, $sql);
+   $row = mysqli_fetch_array($result);
+   echo json_encode($row, JSON_PRETTY_PRINT);
+
+  // $result = mysqli_query($con,$sql);
+
+  // $users_arr = array();
+  //
+  // while( $row = mysqli_fetch_array($result) ){
+  //  $id_detil_brgmsk = $row['id_detil_brgmsk'];
+  //  $id_barang       = $row['id_barang'];
+  //  $nama_barang     = $row['nama_barang'];
+  //  $stok            = $row['stok'];
+  //  $ukuran          = $row['ukuran']." ".$row['satuan'];
+  //  $harga_brgmsk    = $row['harga_brgmsk'];
+  //
+  //  $parse[] = array(
+  //      "idb" => $id_detil_brgmsk,
+  //      "ib"  => $id_barang,
+  //      "nb"  => $nama_barang,
+  //      "s"   => $stok,
+  //      "u"   => $ukuran,
+  //      "hb"  => $harga_brgmsk);
+  // }
+
+  // encoding array to json format
+  // echo json_encode($parse, JSON_PRETTY_PRINT);
+  exit;
+}
 ?>

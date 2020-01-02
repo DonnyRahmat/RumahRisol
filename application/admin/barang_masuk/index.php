@@ -12,7 +12,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 </style>
 
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css">
 <div class="grid">
   <div class="row">
     <p class="h3">Transaksi Barang Masuk</p>
@@ -46,6 +46,7 @@ input[type=number]::-webkit-inner-spin-button {
                             <td>
                               <input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'>
                               <input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden>
+                              <input type='text' class='id_detil_brgmsk' id='id_detil_brgmsk_1' hidden>
                             </td>
                             <td><input type='text' class='stok' id='stok_1' readonly></td>
                             <td><input type='text' class='ukuran' id='ukuran_1' readonly></td>
@@ -87,8 +88,10 @@ input[type=number]::-webkit-inner-spin-button {
                     <div class="row">
                       <div class="cell-md-12">
                           <!-- <input type="submit" name="submit" value="Proses" class="button warning large w-100"> -->
-                          <button type="button" id="save" class="button success ">POST</button>
-                          <button type="button" id="reset" class="button warning">RESET FORM</button>
+                          <button type="button" id="save" class="button success ">Proses</button>
+                          <button type="button" id="reset" class="button info ">Reset Form</button>
+                          <button type="button" id="update" class="button warning" style="display: none;">Update</button>
+                          <button type="button" id="batal" class="button alert" style="display: none;">Batal</button>
                           <div class="hasil"></div>
                       </div>
                     </div>
@@ -109,6 +112,7 @@ input[type=number]::-webkit-inner-spin-button {
                 <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>ID Barang Masuk</th>
                                 <th>Nama Barang</th>
                                 <th>Harga Satuan</th>
@@ -131,11 +135,11 @@ input[type=number]::-webkit-inner-spin-button {
 
 </div>  <!-- tutup appbar -->
 </div> <!-- tutup container -->
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/metro.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="../../../assets/js/crud_barangmasuk.js"></script>
+<script type="text/javascript" src="../../../assets/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/crud_barangmasuk.js"></script>
 <script type="text/javascript">
     $('#test').on('keydown keyup', function(e){
         if ($(this).val() > 105
