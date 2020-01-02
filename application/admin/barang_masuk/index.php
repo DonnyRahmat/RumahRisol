@@ -1,6 +1,6 @@
 <?php
   require_once('../../layout/header.php');
-  require_once('crud_bahanbaku.php');
+  // require_once('crud_bahanbaku.php');
 ?>
 
 <style media="screen">
@@ -31,6 +31,9 @@ input[type=number]::-webkit-inner-spin-button {
                     <div class="row">
                       <div class="cell-md-12">
                         <table class="table compact" style='border-collapse: collapse;'>
+                          <?php
+                          date_default_timezone_set('Asia/Jakarta');
+                          echo date("Y-m-d H:i:s"); ?>
                           <thead>
                            <tr>
                             <th>Nama Barang</th>
@@ -47,6 +50,7 @@ input[type=number]::-webkit-inner-spin-button {
                               <input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'>
                               <input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden>
                               <input type='text' class='id_detil_brgmsk' id='id_detil_brgmsk_1' hidden>
+                              <input type='text' class='id_brgmsk' id='id_brgmsk_1' hidden>
                             </td>
                             <td><input type='text' class='stok' id='stok_1' readonly></td>
                             <td><input type='text' class='ukuran' id='ukuran_1' readonly></td>
