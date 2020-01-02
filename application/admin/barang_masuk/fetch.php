@@ -34,7 +34,7 @@ $col =array(
 );
 
 // $sql ="SELECT * FROM t_barang";
-$sql = "SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user";
+$sql = "SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, date_format(bm.tgl_brg_msk, '%d %M %Y'), u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user";
 $query=mysqli_query($con,$sql);
 
 $totalData=mysqli_num_rows($query);
@@ -42,7 +42,7 @@ $totalData=mysqli_num_rows($query);
 $totalFilter=$totalData;
 
 //fitur search
-$sql ="SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user WHERE 1=1";
+$sql ="SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, date_format(bm.tgl_brg_msk, '%d %M %Y %T'), u.fullname as user FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk inner join t_user U on BM.id_user=u.id_user WHERE 1=1";
 if(!empty($request['search']['value'])){
     $sql.=" AND (bm.id_brgmsk Like '".$request['search']['value']."%' ";
     $sql.=" OR b.nama_barang Like '".$request['search']['value']."%' ";
