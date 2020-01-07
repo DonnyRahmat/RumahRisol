@@ -23,7 +23,6 @@ input[type=number]::-webkit-inner-spin-button {
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
                   <span class="title">Input Barang Masuk</span>
-
               </div>
               <div class="window-content p-2">
                  <input type='button' value='Add more' id='addmore'>
@@ -31,9 +30,6 @@ input[type=number]::-webkit-inner-spin-button {
                     <div class="row">
                       <div class="cell-md-12">
                         <table class="table compact" style='border-collapse: collapse;'>
-                          <?php
-                          date_default_timezone_set('Asia/Jakarta');
-                          echo date("Y-m-d H:i:s"); ?>
                           <thead>
                            <tr>
                             <th>Nama Barang</th>
@@ -121,7 +117,7 @@ input[type=number]::-webkit-inner-spin-button {
                                 <th>Nama Barang</th>
                                 <th>Harga Satuan</th>
                                 <th>Jml Brg Masuk</th>
-                                <th>Total Bayar</th>
+                                <th>Nominal</th>
                                 <th>Brg Msk Tgl</th>
                                 <th>User</th>
                                 <th>Aksi</th>
@@ -132,6 +128,13 @@ input[type=number]::-webkit-inner-spin-button {
           </div> <!--windows -->
      </div> <!--cell -->
   </div> <!--row -->
+</div>
+
+<div id="dialog-confirm" title="Informasi" style="display: none">
+  <p>
+    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+    Anda yakin akan menghapus data transaksi ini?
+  </p>
 </div>
 
 <br />

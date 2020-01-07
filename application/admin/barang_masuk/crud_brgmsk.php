@@ -62,17 +62,18 @@ if(isset($_POST["idbarang"]))
    }
    $stmt1 = null;
 
-   $total = 0;
-    foreach($hrg AS $k=>$v){
-      $total += $v*$jml[$k];
-    }
-    $tott = $total;
+   // untuk insert total_bayar
+   // $total = 0;
+   //  foreach($hrg AS $k=>$v){
+   //    $total += $v*$jml[$k];
+   //  }
+   //  $tott = $total;
 
-   $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, total_bayar, id_user) values (:idb, :tgl, :total, :user)";
+   $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, id_user) values (:idb, :tgl, :user)";
    $stmt2 = $pdo->prepare($sqlInput);
    $stmt2->bindParam(':idb', $idmax);
    $stmt2->bindParam(':tgl', $tglM);
-   $stmt2->bindParam(':total', $tott);
+   // $stmt2->bindParam(':total', $tott);
    $stmt2->bindParam(':user', $_SESSION['id_user']);
    $stmt2->execute();
    $stmt2 = null;
@@ -140,7 +141,7 @@ if (isset($_POST["getUpd"])) {
       exit();
    }
    $sql = "
-   SELECT db.id_detil_brgmsk, concat(b.ukuran, ' ', b.satuan) as uk, b.id_barang, bm.id_brgmsk, b.nama_barang, b.stok, db.harga_brgmsk, db.jml_brgmsk, bm.total_bayar, bm.tgl_brg_msk, u.fullname as user FROM t_barang B
+   SELECT db.id_detil_brgmsk, concat(b.ukuran, ' ', b.satuan) as uk, b.id_barang, bm.id_brgmsk, b.nama_barang, b.stok, db.harga_brgmsk, db.jml_brgmsk, bm.tgl_brg_msk, u.fullname as user FROM t_barang B
    inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang
    INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk
    inner join t_user U on BM.id_user=u.id_user
@@ -201,18 +202,23 @@ if (isset($_POST["getUpd"])) {
       $stmt->bindParam(':j', $_POST['j']);
       $stmt->execute();
 
-      $tot = $_POST['hb'] * $_POST['j'];
-      $sql2 = "UPDATE t_brg_msk set total_bayar=:tot where id_brgmsk=:ibm";
-      $stmt2 = $pdo->prepare($sql2);
-      $stmt2->bindParam(':tot', $tot);
-      $stmt2->bindParam(':ibm', $_POST['ibm']);
-      $stmt2->execute();
-
 
     } catch (\Exception $e) {
       echo $e->getMessage();
     }
 
+  } //end func update
 
-  }
+  if (isset($_GET['delete'])) {
+    try {
+      $sql = "DELETE FROM t_detil_brgmsk WHERE id_detil_brgmsk = :idb";
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(':idb', $_GET['delId']);
+      $stmt->execute();
+    } catch (\Exception $e) {
+      echo $e->getMessage();
+    }
+  } //end func delete
+
+
 ?>

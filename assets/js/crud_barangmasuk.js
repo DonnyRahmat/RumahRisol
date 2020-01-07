@@ -146,11 +146,14 @@ $('#addmore').click(function(){
   });
 
   $('#reset').click(function(){
-    $('#nama_barang').val('');
-    $('#ukuran').val('');
-    $('#stok').val('');
-    $('#stok_min').val('');
-    $('#harga_beli').val('');
+    $('#nmbarang_1').val('');
+    $('#id_barang_1').val('');
+    $('#id_detil_brgmsk_1').val('');
+    $('#id_brgmsk_1').val('');
+    $('#stok_1').val('');
+    $('#ukuran_1').val('');
+    $('#harga_beli_1').val('');
+    $('.jml_brgmsk').val('');
   });
 
   $('#example tbody').on('click', '#edit', function(){
@@ -211,17 +214,18 @@ $('#addmore').click(function(){
           'j':jml
         },
         success:function(response){
-          // $('#nmbarang_1').val('');
-          // $('#stok_1').val('');
-          // $('#ukuran_1').val('');
-          // $('#harga_beli_1').val('');
-          // $('.jml_brgmsk').val('');
-          // $('#id_detil_brgmsk').val('');
-          // $('#addmore').show();
-          // $('#save').show();
-          // $('#update').hide();
-          // Metro.notify.create("Update data barang masuk sukses", "Informasi", {cls: "success"});
-          console.log('ok');
+          $('#nmbarang_1').val('');
+          $('#stok_1').val('');
+          $('#ukuran_1').val('');
+          $('#harga_beli_1').val('');
+          $('.jml_brgmsk').val('');
+          $('#id_detil_brgmsk').val('');
+          $('#addmore').show();
+          $('#save').show();
+          $('#update').hide();
+          $('#batal').hide();
+          Metro.notify.create("Update data barang masuk sukses", "Informasi", {cls: "success"});
+          console.log('update sukses');
           var table = $('#example').DataTable();
           table.draw('page');
         }
@@ -240,5 +244,65 @@ $('#addmore').click(function(){
     $('#update').hide();
     $(this).hide();
   });
+
+  $('#example tbody').on('click', '#hapus_trans', function(){
+
+    // console.log(updId);
+      var data = dataTable.row( $(this).parents('tr') ).data();
+      var delId = data[0];
+      $('#dialog-confirm').show();
+
+      $( "#dialog-confirm" ).dialog({
+        resizable: false,
+        height: "auto",
+        width: "auto",
+        modal: true,
+        buttons: {
+          "Ya": function() {
+            	$.ajax({
+            	  url: 'crud_brgmsk.php',
+            	  type: 'GET',
+            	  data: {
+              	'delete': 1,
+              	'delId': delId
+                },
+                success: function(response){
+                  Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+                  var table = $('#example').DataTable();
+                  table.draw('page');
+                }
+            	});
+              $( this ).dialog( "close" );
+          },
+          "Tidak": function() {
+            $( this ).dialog( "close" );
+          }
+        }
+      });
+
+
+  });
+
+
+
+  // delete data
+  // $(document).on('click', '#hapus', function(){
+  // 	var id_barang = $(this).attr("data-id");
+  // 	$clicked_btn = $(this);
+  // 	$.ajax({
+  // 	  url: '../../../application/admin/stok/crud_bahanbaku.php',
+  // 	  type: 'GET',
+  // 	  data: {
+  //   	'delete': 1,
+  //   	'id_barang': id_barang
+  //     },
+  //     success: function(response){
+  //       Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+  //       var table = $('#example').DataTable();
+  //       table.draw('page');
+  //     }
+  // 	});
+  // }); //delete data
+
 
 }); //akhir doc ready
