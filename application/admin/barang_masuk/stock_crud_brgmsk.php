@@ -50,17 +50,17 @@ if(isset($_POST["idbarang"]))
    date_default_timezone_set('Asia/Jakarta');
    $tglM = date("Y-m-d H:i:s");
    $date = date("dmY");
-   $tot = "SELECT max(mid(id_brgmsk, 13)) as idm from t_brg_msk";
-   $stmt1 = $pdo->prepare($tot);
-   $stmt1->execute();
-   $max = $stmt1->fetchObject();
-   if (is_null($max->idm)){
-     $idmax = "BM/".$date."/1";
-   }elseif ($max->idm >= 1) {
-     $val = $max->idm+1;
-     $idmax = "BM/".$date."/".$val;
-   }
-   $stmt1 = null;
+   // $m1 = "SELECT max(mid(id_brgmsk, 3)) as idm from t_brg_msk";
+   // $stmt1 = $pdo->prepare($m1);
+   // $stmt1->execute();
+   // $max = $stmt1->fetchObject();
+   // if (is_null($max->idm)){
+   //   $idmax = "M-1";
+   // }elseif ($max->idm >= 1) {
+   //   $val = $max->idm+1;
+   //   $idmax = "M-".$val;
+   // }
+   // $stmt1 = null;
 
    // untuk insert total_bayar
    // $total = 0;
@@ -68,15 +68,15 @@ if(isset($_POST["idbarang"]))
    //    $total += $v*$jml[$k];
    //  }
    //  $tott = $total;
-
-   $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, id_user) values (:idb, :tgl, :user)";
-   $stmt2 = $pdo->prepare($sqlInput);
-   $stmt2->bindParam(':idb', $idmax);
-   $stmt2->bindParam(':tgl', $tglM);
-   // $stmt2->bindParam(':total', $tott);
-   $stmt2->bindParam(':user', $_SESSION['id_user']);
-   $stmt2->execute();
-   $stmt2 = null;
+   // echo count($idb)." ";
+   // $sqlInput = "INSERT INTO t_brg_msk (id_brgmsk, tgl_brg_msk, id_user) values (:idb, :tgl, :user)";
+   // $stmt2 = $pdo->prepare($sqlInput);
+   // $stmt2->bindParam(':idb', $idmax);
+   // $stmt2->bindParam(':tgl', $tglM);
+   // // $stmt2->bindParam(':total', $tott);
+   // $stmt2->bindParam(':user', $_SESSION['id_user']);
+   // $stmt2->execute();
+   // $stmt2 = null;
 
    // $idb = $_POST["idbarang"];
    // $query = "INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk)
@@ -94,19 +94,58 @@ if(isset($_POST["idbarang"]))
    // }
    // $stmt3 = null;
 
-   $sql = $pdo->prepare("INSERT INTO t_detil_brgmsk (id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk) VALUES(:idb, :idm, :jml, :hrg)");
+   // $m2 = "SELECT max(id_detil_brgmsk) as idbm from t_detil_brgmsk";
+   // $stmt3 = $pdo->prepare($m2);
+   // $stmt3->execute();
+   // $max = $stmt3->fetchObject();
+   //
+   // if (is_null($max->idbm)) {
+   //  $idet = 0;
+   // }else{
+   //  $idet = $max->idbm;
+   // }
+
+   // $sql = $pdo->prepare("INSERT INTO t_detil_brgmsk (id_detil_brgmsk, id_barang, id_brgmsk, jml_brgmsk, harga_brgmsk) VALUES(:idbm, :idb, :idm, :jml, :hrg)");
+   // $index = 0; // Set index array awal dengan 0
+   // foreach($idb as $idbar){ // Kita buat perulangan berdasarkan nis sampai data terakhir
+   //   $idt = ++$idet;
+   //   $sql->bindParam(':idbm', $idt);
+   //   $sql->bindParam(':idb', $idbar); // Set data nis
+   //   $sql->bindParam(':idm', $idmax); // Ambil dan set data nama sesuai index array dari $index
+   //   $sql->bindParam(':jml', $jml[$index]); // Ambil dan set data telepon sesuai index array dari $index
+   //   $sql->bindParam(':hrg', $hrg[$index]); // Ambil dan set data alamat sesuai index array dari $index
+   //   $sql->execute(); // Eksekusi query insert
+   //
+   //   $index++; // Tambah 1 setiap kali looping
+   // }
+
+   $m2 = "SELECT max(id_brgmsk) as idbm from t_tmp_brgmsk";
+   $stmt3 = $pdo->prepare($m2);
+   $stmt3->execute();
+   $max = $stmt3->fetchObject();
+
+   if (is_null($max->idbm)) {
+    $idet = 0;
+   }else{
+    $idet = $max->idbm;
+   }
+
+   $sql = $pdo->prepare("INSERT INTO t_tmp_brgmsk (id_brgmsk, id_barang, jml_brgmsk, harga_brgmsk, tgl_brgmsk, id_user) VALUES(:idbm, :idb, :jml, :hrg, :tgl, :u)");
    $index = 0; // Set index array awal dengan 0
    foreach($idb as $idbar){ // Kita buat perulangan berdasarkan nis sampai data terakhir
-     $sql->bindParam(':idb', $idbar); // Set data nis
-     $sql->bindParam(':idm', $idmax); // Ambil dan set data nama sesuai index array dari $index
+     $idt = ++$idet;
+     $sql->bindParam(':idbm', $idt);
+     $sql->bindParam(':idb', $idb[$index]); // Set data nis
      $sql->bindParam(':jml', $jml[$index]); // Ambil dan set data telepon sesuai index array dari $index
      $sql->bindParam(':hrg', $hrg[$index]); // Ambil dan set data alamat sesuai index array dari $index
+     $sql->bindParam(':tgl', $tglM); // Ambil dan set data alamat sesuai index array dari $index
+     $sql->bindParam(':u', $_SESSION['id_user']); // Ambil dan set data alamat sesuai index array dari $index
      $sql->execute(); // Eksekusi query insert
 
      $index++; // Tambah 1 setiap kali looping
    }
 
-   echo "Input Tersimpan.";
+   // echo "Input Tersimpan.";
 
    // var_dump($jml);
 
@@ -179,13 +218,21 @@ if (isset($_POST["getUpd"])) {
 }
 //
   if (isset($_POST['updateTrans'])) {
-    // $updId = $_POST['updId'];
-    // $idbar = $_POST['idbar'];
-    // $nm = $_POST['nm'];
-    // $s = $_POST['s'];
-    // $u = $_POST['u'];
-    // $hb = $_POST['hb'];
-    // $j = $_POST['j'];
+    // echo $updId = $_POST['updId'];
+    // echo "<br>";
+    // echo $idbar = $_POST['idbar'];
+    // echo "<br>";
+    // echo $nm = $_POST['nm'];
+    // echo "<br>";
+    // echo $s = $_POST['s'];
+    // echo "<br>";
+    // echo $u = $_POST['u'];
+    // echo "<br>";
+    // echo $hb = $_POST['hb'];
+    // echo "<br>";
+    // echo $j = $_POST['j'];
+    // echo "<br>";
+    echo "Jumlah awal : ".$ja = $_POST['ja'];
 
     // echo $updId;
       // $sql = "UPDATE t_detil_brgmsk set id_barang={$idbar}, harga_brgmsk={$hb}, jml_brgmsk={$j} where id_detil_brgmsk={$updId}";
@@ -202,6 +249,12 @@ if (isset($_POST["getUpd"])) {
       $stmt->bindParam(':j', $_POST['j']);
       $stmt->execute();
 
+      $fixStok = $_POST['s']-$_POST['ja']+$_POST['j'];
+      $sql2 = "UPDATE t_barang set stok=:stok where id_barang=:idbar";
+      $stmt2 = $pdo->prepare($sql2);
+      $stmt2->bindParam(':stok', $fixStok);
+      $stmt2->bindParam(':idbar', $_POST['idbar']);
+      $stmt2->execute();
 
     } catch (\Exception $e) {
       echo $e->getMessage();
@@ -211,10 +264,25 @@ if (isset($_POST["getUpd"])) {
 
   if (isset($_GET['delete'])) {
     try {
-      $sql = "DELETE FROM t_detil_brgmsk WHERE id_detil_brgmsk = :idb";
-      $stmt = $pdo->prepare($sql);
+      $q = "select id_barang from t_detil_brgmsk where id_detil_brgmsk = :idb";
+      $stmt = $pdo->prepare($q);
       $stmt->bindParam(':idb', $_GET['delId']);
       $stmt->execute();
+      $g = $stmt->fetchObject();
+      $idbar = $g->id_barang;
+
+      $sql = "update t_barang set stok=stok-(SELECT jml_brgmsk from t_detil_brgmsk where id_detil_brgmsk=:idb) where id_barang=:idbar";
+      $stmt1 = $pdo->prepare($sql);
+      $stmt1->bindParam(':idb', $_GET['delId']);
+      $stmt1->bindParam(':idbar', $idbar);
+      $stmt1->execute();
+      //
+      $sql1 = "DELETE FROM t_detil_brgmsk WHERE id_detil_brgmsk = :idb";
+      $stmt2 = $pdo->prepare($sql1);
+      $stmt2->bindParam(':idb', $_GET['delId']);
+      $stmt2->execute();
+
+
     } catch (\Exception $e) {
       echo $e->getMessage();
     }

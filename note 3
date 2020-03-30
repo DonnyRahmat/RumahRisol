@@ -1,0 +1,103 @@
+delete B from t_brg_msk B left join t_detil_brgmsk DB on b.id_brgmsk=db.id_brgmsk where db.id_brgmsk is null
+
+//select 30 hari kebelakang
+select 	B.id_barang,
+              B.nama_barang,
+              sum(m.jm) as brgmsk,
+              m.hrg_bm as hbm,
+              sum(k.jk) as brgklr,
+              k.hrg_bk as hbk,
+              SUM(b.stok) as stok,
+              SUM(b.stok*b.harga_beli) as ns
+          from t_barang B
+          left join (
+              select id_brgmsk, id_barang, sum(jml_brgmsk) as jm, sum(jml_brgmsk*harga_brgmsk) as hrg_bm
+              from t_brgmsk
+              where date(tgl_brgmsk) BETWEEN (CURDATE() - INTERVAL 30 DAY) and curdate()
+              GROUP by id_barang
+            ) m on B.id_barang = m.id_barang
+          left join (
+              select id_brgklr, id_barang, sum(jml_brgklr) as jk, sum(jml_brgklr*harga_brgklr) as hrg_bk
+              from t_brgklr
+              where date(tgl_brgklr) BETWEEN (CURDATE() - INTERVAL 30 DAY) and curdate()
+              GROUP by id_barang
+            ) k ON B.id_barang=k.id_barang
+          group by B.id_barang
+
+//SUKSES
+SELECT B.id_barang, B.nama_barang, B.stok, sum(TB.jml_brgmsk) as JML
+from t_barang B left join t_tmp_brgmsk TB on TB.id_barang=B.id_barang
+GROUP BY B.nama_barang ORDER BY B.id_barang ASC
+
+SELECT B.id_barang, B.nama_barang, B.stok as stok_akhir, sum(TB.jml_brgmsk) as JML_Brg_Msk,
+(TB.jml_brgmsk*TB.harga_brgmsk) as total_brg_msk, sum(BK.jml_brgklr) as JML_Brg_Klr,
+(Bk.jml_brgklr*BK.harga_brgklr) as total_brg_klr
+from t_barang B left join t_brgmsk TB on TB.id_barang=B.id_barang
+left outer join t_brgklr BK on BK.id_barang=B.id_barang
+GROUP BY B.nama_barang ORDER BY B.id_barang ASC
+
+select B.id_barang, B.nama_barang, COUNT(BM.jml_brgmsk) as brg_msk, COUNT(BK.jml_brgklr) as brg_klr from
+t_barang B left join t_brgmsk BM on BM.id_barang=B.id_barang
+left join t_brgklr BK on B.id_barang=BK.id_barang
+
+SELECT id_brgmsk FROM t_brgmsk
+WHERE tgl_brgmsk >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+AND tgl_brgmsk < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY
+
+//OKEEEEEEEE
+select B.nama_barang, sum(BM.jml_brgmsk) as jml
+from t_barang B left join t_brgmsk BM
+on B.id_barang=BM.id_barang and date(BM.tgl_brgmsk) = curdate()
+group by B.nama_barang
+
+//FETCH DATATABLES
+SELECT DB.id_brgmsk, b.nama_barang,
+          format(db.harga_brgmsk, 0), db.jml_brgmsk, format(db.harga_brgmsk*db.jml_brgmsk, 0) as total_bayar,
+          date_format(DB.tgl_brgmsk, '%d %M %Y'), u.fullname as user
+          FROM t_barang B inner join t_tmp_brgmsk DB on B.id_barang=DB.id_barang
+          inner join t_user U on DB.id_user=U.id_user
+
+//TRIGGER DELETE DATA DI T_BARANG JIKA DI T_DETIL KOSONG
+delete B from t_brg_msk B left join t_detil_brgmsk DB on b.id_brgmsk=db.id_brgmsk where db.id_brgmsk is null
+
+
+function validatevalue()
+{
+    var c=0;
+    $('input').each(function(){
+        if($(this).val()==""){
+            alert("Fill Value");
+            c++;
+            return false;
+
+        }
+    });
+
+    if(c==0)
+    {
+    alert("Okeh");
+    return true;
+    }
+    else{
+    return false;}
+}
+
+
+echo "<tr>";
+echo "<td>".$nm_bar = $row->nama_barang."</td>";
+echo $brg_msk = nor($row->brgmsk);
+echo $hbm = cmk($row->hbm);
+echo $brg_klr = nor($row->brgklr);
+echo $hbk = cmk($row->hbk);
+echo $stok = nor($row->stok);
+echo $ns = s($row->ns);
+echo "</tr>";
+
+echo "<tr><td>Total</td>";
+echo nor($r2->tjm);
+echo cmk($r2->thm);
+echo nor($r2->tjk);
+echo cmk($r2->thk);
+echo nor($r2->ts);
+echo s($r2->tns);
+echo "</tr>";

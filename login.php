@@ -66,6 +66,17 @@
                         $_SESSION['id_user'] = $user['id_user'];
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['fname'] = $user['fullname'];
+                        $_SESSION['idrole'] = $user['role'];
+
+                        date_default_timezone_set('Asia/Jakarta');
+                        $log = date('Y-m-d H:i:s');
+                        $k = "UPDATE t_user set last_login=:log where id_user=:iduser";
+                        $stmt = $pdo->prepare($k);
+                        $stmt->bindParam(':log', $log);
+                        $stmt->bindParam(':iduser', $_SESSION['id_user']);
+                        $stmt->execute();
+                        $stmt = null;
+
                         header('Location: index.php');
                         exit;
                       }

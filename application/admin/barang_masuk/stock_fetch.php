@@ -23,21 +23,23 @@ $request=$_REQUEST;
 // );  //create column like table in database
 
 $col =array(
-    0   =>  'id_brgmsk',
-    1   =>  'nama_barang',
-    2   =>  'harga_brgmsk',
-    3   =>  'jml_brgmsk',
-    4   =>  'nominal',
-    5   =>  'tgl_brg_msk',
-    6   =>  'fullname'
+    0   =>  'id_detil_brgmsk',
+    1   =>  'id_brgmsk',
+    2   =>  'nama_barang',
+    3   =>  'harga_brgmsk',
+    4   =>  'jml_brgmsk',
+    5   =>  'nominal',
+    6   =>  'tgl_brg_msk',
+    7   =>  'fullname'
 );
 
 // $sql ="SELECT * FROM t_barang";
-$sql = "SELECT DB.id_brgmsk, B.nama_barang,
-          format(DB.harga_brgmsk, 0), DB.jml_brgmsk, format(DB.harga_brgmsk*DB.jml_brgmsk, 0) as total_bayar,
-          date_format(DB.tgl_brgmsk, '%d %M %Y'), u.fullname as user
-          FROM t_barang B inner join t_brgmsk DB on B.id_barang=DB.id_barang
-          inner join t_user U on DB.id_user=U.id_user";
+$sql = "SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang,
+          format(db.harga_brgmsk, 0), db.jml_brgmsk, format(db.harga_brgmsk*db.jml_brgmsk, 0) as total_bayar,
+          date_format(bm.tgl_brg_msk, '%d %M %Y'), u.fullname as user
+          FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang
+          INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk
+          inner join t_user U on BM.id_user=u.id_user";
 $query=mysqli_query($con,$sql);
 
 $totalData=mysqli_num_rows($query);
@@ -45,14 +47,16 @@ $totalData=mysqli_num_rows($query);
 $totalFilter=$totalData;
 
 //fitur search
-$sql ="SELECT DB.id_brgmsk, B.nama_barang,
-          format(DB.harga_brgmsk, 0), DB.jml_brgmsk, format(DB.harga_brgmsk*DB.jml_brgmsk, 0) as total_bayar,
-          date_format(DB.tgl_brgmsk, '%d %M %Y'), u.fullname as user
-          FROM t_barang B inner join t_brgmsk DB on B.id_barang=DB.id_barang
-          inner join t_user U on DB.id_user=U.id_user WHERE 1=1";
+$sql ="SELECT db.id_detil_brgmsk, bm.id_brgmsk, b.nama_barang,
+        format(db.harga_brgmsk, 0), db.jml_brgmsk, format(db.harga_brgmsk*db.jml_brgmsk, 0) as total_bayar,
+        date_format(bm.tgl_brg_msk, '%d %M %Y %T'), u.fullname as user
+        FROM t_barang B inner join t_detil_brgmsk DB on B.id_barang=DB.id_barang
+        INNER JOIN t_brg_msk BM on DB.id_brgmsk=BM.id_brgmsk
+        inner join t_user U on BM.id_user=u.id_user WHERE 1=1";
 if(!empty($request['search']['value'])){
-    $sql.=" AND (B.nama_barang Like '%".$request['search']['value']."%' ";
-    $sql.=" OR date_format(DB.tgl_brgmsk, '%d %M %Y %T') Like '%".$request['search']['value']."%' ";
+    $sql.=" AND (bm.id_brgmsk Like '%".$request['search']['value']."%' ";
+    $sql.=" OR b.nama_barang Like '%".$request['search']['value']."%' ";
+    $sql.=" OR date_format(bm.tgl_brg_msk, '%d %M %Y %T') Like '%".$request['search']['value']."%' ";
     $sql.=" OR u.fullname Like '%".$request['search']['value']."%' )";
 }
 
@@ -76,6 +80,7 @@ while($row=mysqli_fetch_array($query)){
     $subdata[]=$row[4];
     $subdata[]=$row[5];
     $subdata[]=$row[6];
+    $subdata[]=$row[7];
 
     // event on click delete dan update
     //$row[0] = id

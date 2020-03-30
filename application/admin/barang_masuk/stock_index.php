@@ -15,14 +15,14 @@ input[type=number]::-webkit-inner-spin-button {
 <link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css">
 <div class="grid">
   <div class="row">
-    <p class="h3">Transaksi Barang Keluar</p>
+    <p class="h3">Transaksi Barang Masuk</p>
   </div>
   <div class="row">
     <div class="cell-md-12 sm-12">
           <div class="window sm-12">
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
-                  <span class="title">Input Barang Keluar</span>
+                  <span class="title">Input Barang Masuk</span>
               </div>
               <div class="window-content p-2">
                  <input type='button' value='Add more' id='addmore'>
@@ -36,30 +36,61 @@ input[type=number]::-webkit-inner-spin-button {
                             <th>Stok</th>
                             <th>Ukuran</th>
                             <th>Harga Barang</th>
-                            <th>Jumlah Barang</th>
+                            <th>Jumlah Masuk</th>
                             <th>Aksi</th>
                            </tr>
                           </thead>
-                        </div>
-                      </div>
                           <tbody class="aut">
+                          <form id="ins" class="ins">
                            <tr class='tr_input'>
                             <td>
-                              <input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'>
+                              <input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang' name="nmbarang[]" required>
                               <input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden>
-                              <input type='text' class='id_brgklr' id='id_brgklr_1' hidden>
-                              <input type='text' class='stk_awal' id='stk_awal_1'  hidden>
+                              <input type='text' class='id_detil_brgmsk' id='id_detil_brgmsk_1' hidden>
+                              <input type='text' class='id_brgmsk' id='id_brgmsk_1' hidden>
+                              <input type='text' class='jml_awal' hidden>
                             </td>
                             <td><input type='text' class='stok' id='stok_1' readonly></td>
                             <td><input type='text' class='ukuran' id='ukuran_1' readonly></td>
-                            <td><input type='number' class='harga_jual' name='harga_jual[]' id='harga_jual_1' ></td>
-                            <td><input type='number' class='jml_brgklr'name='jml_brgklr[]' id='jml_brgklr_1'>  </td>
+                            <td><input type='number' class='harga_beli' name='harga_beli[]' id='harga_beli_1' required></td>
+                            <td><input type='number' class='jml_brgmsk'name='jml_brgmsk[]' required>  </td>
                             <td><input type='button' value='Delete' class='delete'></td>
                            </tr>
+                           </form>
                           </tbody>
                          </table>
+                      </div>
+                      <!-- <div class="cell-md-12">
+                        <button type="button" id="tambah_input" class="button info ">Tambah Inputan</button>
+                      </div>
+                    </div>
+                    <div class="tambahan">
+                      <div class="row">
+                        <div class="cell-md-2">
+                              <label for="autocomplete">Cari Bahan </label> <br />
+                              <input id="autocomplete" type="text" data-role="input">
+                        </div>
+                        <div class="cell-md-1">
+                            <label>ID</label> <br />
+                            <input type='text' id='selectuser_id' />
+                        </div>
+                        <div class="cell-md-2">
+                          <label>Satuan</label> <br />
+                          <input id="satuan" type="text" data-role="input" readonly/>
+                        </div>
+                        <div class="cell-md-2">
+                          <label>Ukuran</label> <br />
+                          <input id="ukuran" type="text" data-role="input" readonly/>
+                        </div>
+                      </div>
+                    </div> -->
+                    </div>
+                    <div class="row">
+
+                    </div>
                     <div class="row">
                       <div class="cell-md-12">
+                          <!-- <input type="submit" name="submit" value="Proses" class="button warning large w-100"> -->
                           <button type="button" id="save" class="button success ">Proses</button>
                           <button type="button" id="reset" class="button info ">Reset Form</button>
                           <button type="button" id="update" class="button warning" style="display: none;">Update</button>
@@ -78,18 +109,19 @@ input[type=number]::-webkit-inner-spin-button {
           <div class="window sm-12">
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
-                  <span class="title">List Transaksi Keluar Bahan Baku</span>
+                  <span class="title">List Transaksi Masuk Bahan Baku </span>
               </div>
               <div class="window-content p-2">
                 <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>ID Barang Keluar</th>
+                                <th>ID</th>
+                                <th>ID Brg Msk</th>
                                 <th>Nama Barang</th>
                                 <th>Harga Satuan</th>
-                                <th>Jml Brg Keluar</th>
+                                <th>Jml Brg Masuk</th>
                                 <th>Nominal</th>
-                                <th>Brg Klr Tgl</th>
+                                <th>Brg Msk Tgl</th>
                                 <th>User</th>
                                 <th>Aksi</th>
                             </tr>
@@ -114,10 +146,11 @@ input[type=number]::-webkit-inner-spin-button {
 </div>  <!-- tutup appbar -->
 </div> <!-- tutup container -->
 <script type="text/javascript" src="../../../assets/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="../../../assets/js/metro.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.js"></script>
 <script type="text/javascript" src="../../../assets/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../../../assets/js/crud_barangkeluar.js"></script>
+<script type="text/javascript" src="../../../assets/js/crud_barangmasuk.js"></script>
 <script type="text/javascript">
     $('#test').on('keydown keyup', function(e){
         if ($(this).val() > 105

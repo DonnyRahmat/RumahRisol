@@ -103,38 +103,55 @@ $('#addmore').click(function(){
 
   //save data
   $('#save').click(function(){
-   var idbarang = [];
-   var harga_beli = [];
-   var jml_brgmsk = [];
-   var transaksi = [];
-   $('.idbarang').each(function(){
-    idbarang.push($(this).val());
-   });
-   $('.harga_beli').each(function(){
-    harga_beli.push($(this).val());
-   });
-   $('.jml_brgmsk').each(function(){
-    jml_brgmsk.push($(this).val());
-   });
-   $.ajax({
-    url:"crud_brgmsk.php",
-    method:"POST",
-    data:{
-      idbarang:idbarang,
-      harga_beli:harga_beli,
-      jml_brgmsk:jml_brgmsk
-    },
-    success:function(data){
-     console.log(data);
-     Metro.notify.create("Input barang masuk sukses", "Informasi", {cls: "success"});
-     $(".aut").empty();
-     var res = "<tr class='tr_input'><td><input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'><input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden></td><td><input type='text' class='stok' id='stok_1' readonly></td><td><input type='text' class='ukuran' id='ukuran_1' readonly></td><td><input type='number' class='harga_beli' name='harga_beli[]' id='harga_beli_1' ></td><td><input type='number' class='jml_brgmsk'name='jml_brgmsk[]'></td><td><input type='button' value='Delete' class='delete'></td></tr>";
-     $(".aut").append(res);
-     var table = $('#example').DataTable();
-     table.draw('page');
-    }
-   });
-  });
+    // var  jml = $('.jml_brgmsk').val();
+    // if (jml == '') {
+    //   var jml = "kosong";
+    // }
+    // console.log(jml);
+      // $('.jml_brgmsk').each(function() {
+      //     if($(this).val() == ''){
+      //       Metro.notify.create("Field Nama Barang, Harga beli, Jml brg msk harus diisi", "Informasi", {cls: "alert"});
+      //     }else{
+      //       Metro.notify.create("OK", "Informasi", {cls: "success"});
+      //     }
+      // });
+      //
+      var idbarang = [];
+      var harga_beli = [];
+      var jml_brgmsk = [];
+      var transaksi = [];
+
+      $('.idbarang').each(function(){
+          idbarang.push($(this).val());
+      });
+
+      $('.harga_beli').each(function(){
+          harga_beli.push($(this).val());
+      });
+
+      $('.jml_brgmsk').each(function(){
+          jml_brgmsk.push($(this).val());
+      });
+
+      $.ajax({
+       url:"crud_brgmsk.php",
+       method:"POST",
+       data:{
+         idbarang:idbarang,
+         harga_beli:harga_beli,
+         jml_brgmsk:jml_brgmsk
+       },
+       success:function(data){
+        console.log(data);
+        Metro.notify.create("Input barang masuk sukses", "Informasi", {cls: "success"});
+        $(".aut").empty();
+        var res = "<tr class='tr_input'><td><input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'><input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden><input type='text' class='id_detil_brgmsk' id='id_detil_brgmsk_1' hidden><input type='text' class='id_brgmsk' id='id_brgmsk_1' hidden><input type='text' class='jml_awal' hidden></td><td><input type='text' class='stok' id='stok_1' readonly></td><td><input type='text' class='ukuran' id='ukuran_1' readonly></td><td><input type='number' class='harga_beli' name='harga_beli[]' id='harga_beli_1' ></td><td><input type='number' class='jml_brgmsk'name='jml_brgmsk[]'></td><td><input type='button' value='Delete' class='delete'></td></tr>";
+        $(".aut").append(res);
+        var table = $('#example').DataTable();
+        table.draw('page');
+       }
+      });
+  });//end func save
 
   var dataTable=$('#example').DataTable({
       "processing": true,
@@ -164,6 +181,7 @@ $('#addmore').click(function(){
    $('#save').hide();
    $('#update').show();
    $('#batal').show();
+   $('.delete').hide();
    $.ajax({
         url:"crud_brgmsk.php",
         method:"POST",
@@ -179,19 +197,13 @@ $('#addmore').click(function(){
              $('#ukuran_1').val(data.uk);
              $('#harga_beli_1').val(data.harga_brgmsk);
              $('.jml_brgmsk').val(data.jml_brgmsk);
-             $('#id_detil_brgmsk_1').val(data.id_detil_brgmsk);
              $('#id_brgmsk_1').val(data.id_brgmsk);
-             // $('#designation').val(data.designation);
-             // $('#age').val(data.age);
-             // $('#employee_id').val(data.id);
-             // $('#insert').val("Update");
-             // $('#add_data_Modal').modal('show');
+             $('.jml_awal').val(data.jml_brgmsk);
         } //end success
    }); //end ajax edit
  }); //end edit func
 
   $(document).on('click', '#update', function(){
-    var updId = $('#id_detil_brgmsk_1').val();
     var idbar = $('#idbarang_1').val();
     var nmbar = $('#nmbarang_1').val();
     var stok = $('#stok_1').val();
@@ -199,6 +211,7 @@ $('#addmore').click(function(){
     var harga_beli = $('#harga_beli_1').val();
     var jml = $('.jml_brgmsk').val();
     var ibm = $('#id_brgmsk_1').val();
+    var ja = $('.jml_awal').val();
     $.ajax({
         url:"../../../application/admin/barang_masuk/crud_brgmsk.php",
         type: 'POST',
@@ -211,7 +224,8 @@ $('#addmore').click(function(){
           's':stok,
           'u':ukuran,
           'hb':harga_beli,
-          'j':jml
+          'j':jml,
+          'ja':ja
         },
         success:function(response){
           $('#nmbarang_1').val('');
@@ -219,13 +233,13 @@ $('#addmore').click(function(){
           $('#ukuran_1').val('');
           $('#harga_beli_1').val('');
           $('.jml_brgmsk').val('');
-          $('#id_detil_brgmsk').val('');
+          $('.jml_awal').val('');
           $('#addmore').show();
           $('#save').show();
           $('#update').hide();
           $('#batal').hide();
           Metro.notify.create("Update data barang masuk sukses", "Informasi", {cls: "success"});
-          console.log('update sukses');
+          console.log(response);
           var table = $('#example').DataTable();
           table.draw('page');
         }
@@ -233,6 +247,7 @@ $('#addmore').click(function(){
   });
 
   $('#batal').click(function(){
+    $('.delete').show();
     $('#nmbarang_1').val('');
     $('#stok_1').val('');
     $('#ukuran_1').val('');
@@ -267,7 +282,8 @@ $('#addmore').click(function(){
               	'delId': delId
                 },
                 success: function(response){
-                  Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+                  // Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+                  console.log(response)
                   var table = $('#example').DataTable();
                   table.draw('page');
                 }

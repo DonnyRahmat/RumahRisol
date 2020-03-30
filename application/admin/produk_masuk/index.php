@@ -15,14 +15,14 @@ input[type=number]::-webkit-inner-spin-button {
 <link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css">
 <div class="grid">
   <div class="row">
-    <p class="h3">Transaksi Barang Keluar</p>
+    <p class="h3">Transaksi Produk Masuk</p>
   </div>
   <div class="row">
     <div class="cell-md-12 sm-12">
           <div class="window sm-12">
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
-                  <span class="title">Input Barang Keluar</span>
+                  <span class="title">Input Produk Masuk</span>
               </div>
               <div class="window-content p-2">
                  <input type='button' value='Add more' id='addmore'>
@@ -32,35 +32,40 @@ input[type=number]::-webkit-inner-spin-button {
                         <table class="table compact" style='border-collapse: collapse;'>
                           <thead>
                            <tr>
-                            <th>Nama Barang</th>
+                            <th>Nama Produk</th>
                             <th>Stok</th>
-                            <th>Ukuran</th>
-                            <th>Harga Barang</th>
-                            <th>Jumlah Barang</th>
+                            <th>Harga Produk</th>
+                            <th>Jumlah Masuk</th>
                             <th>Aksi</th>
                            </tr>
                           </thead>
-                        </div>
-                      </div>
                           <tbody class="aut">
+                          <form id="ins" class="ins">
                            <tr class='tr_input'>
                             <td>
-                              <input type='text' class='nmbarang' id='nmbarang_1' placeholder='Masukkan Nama Barang'>
-                              <input type='number' class='idbarang' id='idbarang_1' name='idbarang[]' hidden>
-                              <input type='text' class='id_brgklr' id='id_brgklr_1' hidden>
-                              <input type='text' class='stk_awal' id='stk_awal_1'  hidden>
+                              <input type='text' class='nmproduk' id='nmproduk_1' placeholder='Masukkan Nama produk' name="nmproduk[]" required>
+                              <input type='number' class='idproduk' id='idproduk_1' name='idproduk[]' hidden>
+                              <input type='text' class='id_prdmsk' id='id_prdmsk_1' hidden>
+                              <!-- <input type='text' class='jml_awal' hidden> -->
                             </td>
-                            <td><input type='text' class='stok' id='stok_1' readonly></td>
-                            <td><input type='text' class='ukuran' id='ukuran_1' readonly></td>
-                            <td><input type='number' class='harga_jual' name='harga_jual[]' id='harga_jual_1' ></td>
-                            <td><input type='number' class='jml_brgklr'name='jml_brgklr[]' id='jml_brgklr_1'>  </td>
-                            <td><input type='button' value='Delete' class='delete'></td>
+                            <td>
+                              <input type='text' class='stok' id='stok_1' readonly required>
+                              <input type='text' class='stok_awal' id='stok_awal_1' readonly required hidden>
+                            </td>
+                            <td><input type='number' class='harga_beli' name='harga_beli[]' id='harga_beli_1' required></td>
+                            <td><input type='number' class='jml_prdmsk'name='jml_prdmsk[]' id='jml_prdmsk_1'required>  </td>
                            </tr>
+                           </form>
                           </tbody>
                          </table>
+                      </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
                     <div class="row">
                       <div class="cell-md-12">
-                          <button type="button" id="save" class="button success ">Proses</button>
+                          <button id="save" type="button" class="button success ">Proses</button>
                           <button type="button" id="reset" class="button info ">Reset Form</button>
                           <button type="button" id="update" class="button warning" style="display: none;">Update</button>
                           <button type="button" id="batal" class="button alert" style="display: none;">Batal</button>
@@ -78,18 +83,18 @@ input[type=number]::-webkit-inner-spin-button {
           <div class="window sm-12">
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
-                  <span class="title">List Transaksi Keluar Bahan Baku</span>
+                  <span class="title">List Produk Masuk</span>
               </div>
               <div class="window-content p-2">
                 <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>ID Barang Keluar</th>
-                                <th>Nama Barang</th>
+                                <th>ID Produk Msk</th>
+                                <th>Nama Produk</th>
                                 <th>Harga Satuan</th>
-                                <th>Jml Brg Keluar</th>
+                                <th>Jml Produk Masuk</th>
                                 <th>Nominal</th>
-                                <th>Brg Klr Tgl</th>
+                                <th>Produk Msk Tgl</th>
                                 <th>User</th>
                                 <th>Aksi</th>
                             </tr>
@@ -117,7 +122,7 @@ input[type=number]::-webkit-inner-spin-button {
 <script type="text/javascript" src="../../../assets/js/metro.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.js"></script>
 <script type="text/javascript" src="../../../assets/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../../../assets/js/crud_barangkeluar.js"></script>
+<script type="text/javascript" src="../../../assets/js/crud_produkmasuk.js"></script>
 <script type="text/javascript">
     $('#test').on('keydown keyup', function(e){
         if ($(this).val() > 105
@@ -128,6 +133,7 @@ input[type=number]::-webkit-inner-spin-button {
            $(this).val(105);
         }
     });
+
 </script>
 </body>
 </html>
