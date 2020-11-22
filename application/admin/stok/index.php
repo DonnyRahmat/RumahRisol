@@ -1,6 +1,11 @@
 <?php
   require_once('../../layout/header.php');
   require_once('crud_bahanbaku.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+  $u;
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
 ?>
 <div class="grid">
   <div class="row">
@@ -84,19 +89,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>1</td>
-                    <td>Risol</td>
-                    <td>99</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Risol</td>
-                    <td>99</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Risol</td>
-                    <td>99</td>
+                    <td colspan="3" align="center">Tidak ada</td>
                   </tr>
                 </tbody>
               </table>

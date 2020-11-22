@@ -39,12 +39,15 @@
   }
 
   // delete data
-  if (isset($_GET['delete'])) {
+  if (isset($_POST['delete'])) {
     $sql = "DELETE FROM t_barang WHERE id_barang =  :idb";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':idb', $_GET['id_barang']);
+    $stmt->bindParam(':idb', $_POST['delId']);
     $stmt->execute();
   	exit();
+    // $d = $_POST['delId'];
+    // echo "DELETE FROM t_barang WHERE id_barang = $d";
+    echo "Hapus data sukses";
   }
 
   //update data

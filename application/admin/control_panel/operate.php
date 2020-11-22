@@ -147,7 +147,7 @@ if (isset($_POST['updateDat']) && $_POST['updateDat']==1) {
       $_stmt = $pdo->prepare($_q);
       $_stmt->bindParam(':iduser', $_POST['iduser']);
       $_stmt->bindParam(':u', $_POST['u']);
-      $_stmt->bindParam(':p', password_hash($_POST['pass'], PASSWORD_DEFAULT));
+      $_stmt->bindParam(':p', $_POST['pass'], PASSWORD_DEFAULT);
       $_stmt->bindParam(':f', $_POST['np']);
       $_stmt->bindParam(':a', $_POST['alamat']);
       $_stmt->bindParam(':telp', $_POST['telp']);
@@ -171,19 +171,12 @@ if (isset($_POST['saveMod'])) {
   if(empty(trim($_POST['link']))) {
       $json['error']['link'] = 'Tolong isi link modul';
   }
-  if(empty(trim($_POST['akses']))) {
-      $json['error']['akses'] = 'Tolong isi akses modul';
-  }
-  if(empty(trim($_POST['icon']))) {
-      $json['error']['icon'] = 'Tolong isi icon modul';
-  }
 
   if(empty($json['error'])) {
-      $_q = "INSERT INTO t_rolemod (nama_modul, link_modul, access, icon) values (:nm, :lm, :a, :i)";
+      $_q = "INSERT INTO t_rolemod (nama_modul, link_modul, icon) values (:nm, :lm, :i)";
       $_stmt = $pdo->prepare($_q);
       $_stmt->bindParam(':nm', $_POST['nm']);
       $_stmt->bindParam(':lm', $_POST['link']);
-      $_stmt->bindParam(':a', $_POST['akses']);
       $_stmt->bindParam(':i', $_POST['icon']);
       $_stmt->execute();
       $_stmt = null;
@@ -205,7 +198,6 @@ if (isset($_POST['getUpdModul'])) {
        "id" => $j->id_rolemod,
        "nm"  => $j->nama_modul,
        "lm"   => $j->link_modul,
-       "a"   => $j->access,
        "i"   => $j->icon
      );
 } //end getupdMod
@@ -217,20 +209,13 @@ if (isset($_POST['saveUpdModul']) && $_POST['saveUpdModul']==1) {
   if(empty(trim($_POST['link_modul']))) {
       $json['error']['link'] = 'Tolong isi link modul';
   }
-  if(empty(trim($_POST['access']))) {
-      $json['error']['akses'] = 'Tolong isi akses modul';
-  }
-  if(empty(trim($_POST['icon']))) {
-      $json['error']['icon'] = 'Tolong isi icon modul';
-  }
 
   if(empty($json['error'])) {
-      $k = "UPDATE t_rolemod set nama_modul=:nm, link_modul=:lm, access=:a, icon=:i where id_rolemod=:irm";
+      $k = "UPDATE t_rolemod set nama_modul=:nm, link_modul=:lm, icon=:i where id_rolemod=:irm";
       $stmt = $pdo->prepare($k);
       $stmt->bindParam(':irm', $_POST['idUpdMod']);
       $stmt->bindParam(':nm', $_POST['nama_modul']);
       $stmt->bindParam(':lm', $_POST['link_modul']);
-      $stmt->bindParam(':a', $_POST['access']);
       $stmt->bindParam(':i', $_POST['icon']);
       $stmt->execute();
       $_stmt = null;
@@ -248,6 +233,47 @@ if (isset($_POST['delModul']) && $_POST['delModul']==1) {
       $_stmt = null;
       $json['msg'] = 'Delete Data Sukses';
 } //end del mod
+
+if (isset($_POST['idumod'])) {
+  if(empty(trim($_POST['idumod']))) {
+      $json['error']['idumod'] = 'Piilh user yang ingin diupdate hak aksesnya';
+  }
+
+  if(empty($_POST['roleUpd'])) {
+      $json['error']['roleUpd'] = 'User harus memiliki hak akses';
+  }
+
+  if(empty($json['error'])) {
+    $_d = "DELETE FROM t_detil_role where id_role=:idrole";
+    $_stmt = $pdo->prepare($_d);
+    $_stmt->bindParam(':idrole', $_POST['idumod']);
+    $_stmt->execute();
+    $_stmt = null;
+
+      $_stmt = $pdo->prepare("SELECT max(id_detil_role) as id from t_detil_role");
+      $_stmt->execute();
+      $h = $_stmt->fetchObject();
+      if ($h->id == "") {
+          $id = 1;
+      }else{
+          $id = $h->id+1;
+      }
+      $_stmt = null;
+
+      $data = $_POST['roleUpd'];
+
+      $stmt = $pdo->prepare("INSERT INTO t_detil_role (id_detil_role, id_role, id_rolemod) values (:idr, :id, :ir)");
+      $stmt->bindParam(':id', $_POST['idumod']);
+      for ($i=0; $i < count($data); $i++) {
+        $_id = $id++;
+        $stmt->bindParam(':idr', $_id);
+        $stmt->bindParam(':ir', $data[$i]);
+        $stmt->execute();
+      }
+      $stmt = null;
+      $json['msg'] = "Update Hak Akses Sukses";
+  }
+} //end upd mod
 
 echo json_encode($json, JSON_PRETTY_PRINT);
 

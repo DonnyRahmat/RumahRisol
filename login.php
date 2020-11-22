@@ -14,7 +14,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rumah Risol</title>
-    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+    <link rel="stylesheet" href="<?php echo base; ?>assets/css/metro-all.min.css">
+
   </head>
   <body>
     <div class="container">
@@ -67,6 +68,7 @@
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['fname'] = $user['fullname'];
                         $_SESSION['idrole'] = $user['role'];
+                        $_SESSION['ktp'] = $user['fc_ktp'];
 
                         date_default_timezone_set('Asia/Jakarta');
                         $log = date('Y-m-d H:i:s');
@@ -91,8 +93,8 @@
       </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <script src="<?php echo base; ?>assets/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="<?php echo base; ?>assets/js/metro.min.js"></script>
     <script type="text/javascript">
 
     function validasi() {

@@ -137,13 +137,42 @@ $('#addmore').click(function(){
    });
   });
 
-  var dataTable=$('#example').DataTable({
+  let dataTable=$('#example').DataTable({
       "processing": true,
       "serverSide": true,
       "ajax":{
           url:"fetch.php",
           type:"post"
       }
+  });
+
+  async function filter_laporan(filtered, ket='') {
+    await dataTable.clear().destroy();
+    dataTable = $('#example').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            url:"fetch.php",
+            type:"post",
+            data:{
+              filtered:filtered, ket:ket
+            }
+        }
+    });
+  }
+
+  filter_laporan('no');
+
+  $('#filter_laporan').on('click', function(){
+
+    if ($('#filter_opt').val() == '') {
+      Metro.notify.create("Pilih waktu filter", "Informasi", {cls: "alert"});
+    }else{
+      let ket = $('#filter_opt').val();
+      let filtered = 'yes';
+      
+      filter_laporan(filtered, ket);
+    }
   });
 
   $('#reset').click(function(){

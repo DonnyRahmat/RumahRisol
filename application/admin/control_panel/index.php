@@ -1,5 +1,10 @@
 <?php
   require_once('../../layout/header.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
+
 ?>
 <link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css">
 <div class="grid">
@@ -126,23 +131,16 @@
                     <div class="window-content p-2">
                       <form id="reg_modul">
                           <div class="row">
-                              <div class="cell-md-3">
+                              <div class="cell-md-4">
                                   <label>Nama Modul</label>
                                   <input type="text" id="nama_modul">
                                   <input type="text" id="idmod" hidden>
                               </div>
-                              <div class="cell-md-5">
+                              <div class="cell-md-4">
                                   <label>Link Modul</label>
                                   <input type="text" id="link_modul">
                               </div>
-                              <div class="cell-md-2">
-                                  <label>Akses</label>
-                                  <select id="akses_modul">
-                                    <option value="R">Read</option>
-                                    <option value="RW">Read & Write</option>
-                                  </select>
-                                </div>
-                              <div class="cell-md-2">
+                              <div class="cell-md-4">
                                   <label>Icon</label>
                                   <input type="text" id="icon_modul">
                               </div>
@@ -208,6 +206,7 @@
               </ul>
             </div> <!-- cell -->
             <div class="cell-md-8 sm-12">
+              <input type="number" id="idumod" readonly hidden>
                 <table class="table compact" id="hasil">
                   <thead>
                     <th>Nama Modul</th>
@@ -218,6 +217,13 @@
 
                     </tbody>
                   </form>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3">
+                          <button type="button" name="submit" id="simpanDataAksesModul" style="display:none" class="button success">Simpan Pengaturan</button>
+                        </td>
+                      </tr>
+                    </tfoot>
                 </table>
             </div> <!-- cell -->
           </div>

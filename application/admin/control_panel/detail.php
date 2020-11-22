@@ -144,28 +144,21 @@ input[type=number]::-webkit-inner-spin-button {
              <hr>
              <div class="row">
                <div class="cell-md-1"></div>
-               <div class="cell-md-2"><b>Akses</b></div>
+               <div class="cell-md-4"><b>Hak Akses Menu</b></div>
              </div>
              <div class="row">
                <div class="cell-md-1"></div>
                <div class="cell-md-10">
-                 <table class="table table-border cell-border ">
+                 <table class="table table-border cell-border striped row-hover">
                  <?php
-                   $sql = "SELECT U.fullname, R.nama_modul, R.link_modul, R.access, R.icon from t_rolemod R left join t_detil_role DR on DR.id_rolemod=R.id_rolemod left join t_role RO on RO.id_role=DR.id_role left join t_user U on RO.id_role=U.role where U.role=:idrole group by DR.id_detil_role";
+                   $sql = "SELECT U.fullname, R.nama_modul, R.link_modul, R.icon from t_rolemod R left join t_detil_role DR on DR.id_rolemod=R.id_rolemod left join t_role RO on RO.id_role=DR.id_role left join t_user U on RO.id_role=U.role where U.role=:idrole group by DR.id_detil_role";
                    $stmt = $pdo->prepare($sql);
                    $stmt->bindParam(':idrole', $_SESSION['idrole']);
                    $stmt->execute();
                    $hasil = $stmt->fetchAll();
                    foreach ($hasil as $h) {
-                     if ($h['access'] == 'RW') {
-                       $acc = "<div class='text-ultralight tally success'>READ</div> ";
-                       $acc .= "<div class='text-ultralight tally alert'>WRITE</div>";
-                     }elseif ($h['access'] == 'R') {
-                       $acc = "<div class='text-ultralight tally success'>READ</div> ";
-                     }
                      echo "<tr>
                             <td>".$h['nama_modul']."</td>
-                            <td>".$acc."</td>
                           </tr>";
                    }
                  ?>

@@ -1,6 +1,10 @@
 <?php
   require_once('../../layout/header.php');
-  // require_once('crud_bahanbaku.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+  $u;
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
 ?>
 
 <!-- <link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css"> -->

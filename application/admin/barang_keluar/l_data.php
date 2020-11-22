@@ -19,7 +19,7 @@ $request = $_POST['request']; // request
 if($request == 1){
  $search = "%".$_POST['search']."%";
 
- $sql = "SELECT * FROM t_barang WHERE nama_barang like :search";
+ $sql = "SELECT * FROM t_barang WHERE nama_barang like :search and stok>=1";
  $stmt = $pdo->prepare($sql);
  $stmt->bindParam(':search', $search);
  $stmt->execute();
@@ -28,14 +28,6 @@ if($request == 1){
    $response[] = array("value"=>$row['id_barang'],
                        "label"=>$row['nama_barang']);
  }
-
-
- // $sql = "SELECT * FROM t_barang WHERE nama_barang like'%".$search."%'";
- // $result = mysqli_query($con,$sql);
- //
- // while($row = mysqli_fetch_array($result) ){
- //  $response[] = array("value"=>$row['id_barang'],"label"=>$row['nama_barang']);
- // }
 
  // encoding array to json format
  echo json_encode($response);

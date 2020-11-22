@@ -153,7 +153,38 @@ $('#addmore').click(function(){
       });
   });//end func save
 
-  var dataTable=$('#example').DataTable({
+  // filter_lap('no');
+
+  // async function filter_lap(filtered, ket='') {
+  //   $('#example').DataTable().destroy();
+  //   var dataTable = await $('#example').DataTable({
+  //       "processing": true,
+  //       "serverSide": true,
+  //       "ajax":{
+  //           url:"fetch.php",
+  //           type:"post",
+  //           data:{
+  //             filtered:filtered, ket:ket
+  //           }
+  //       }
+  //   });
+  //   return dataTable;
+  // }
+
+  // $('#bd').click(function(){
+  //   var ket = $('#cd').val();
+  //   if (ket != "") {
+  //     $('#example').DataTable().destroy();
+  //     filter_lap('yes', ket);
+  //     // $('#example').DataTable().draw();
+  //     console.log('sukses');
+  //   }else{
+  //     Metro.notify.create("Pilih waktu filter", "Informasi", {cls: "alert"});
+  //     console.log('kosong');
+  //   }
+  // });
+
+  let dataTable=$('#example').DataTable({
       "processing": true,
       "serverSide": true,
       "ajax":{
@@ -161,6 +192,41 @@ $('#addmore').click(function(){
           type:"post"
       }
   });
+
+  async function filter_laporan(filtered, ket) {
+      await dataTable.clear().destroy();
+        dataTable = $('#example').DataTable({
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+              url:"fetch.php",
+              type:"post",
+              data:{
+                filtered:filtered, 
+                ket:ket,
+              },
+            dataSrc: function ( json ) {
+                //Make your callback here.
+                // console.log(json);
+                return json.data;
+            } 
+          }
+        });
+  }
+
+  filter_laporan('no');
+
+  $('button#filter_laporan').on('click', function(){
+    if ($('#filter_opt').val() == '') {
+      Metro.notify.create("Pilih waktu filter", "Informasi", {cls: "alert"});
+    }else{
+      let ket = $('#filter_opt').val();
+      let filtered = 'yes';
+      
+      filter_laporan(filtered, ket);
+    }
+  });
+
 
   $('#reset').click(function(){
     $('#nmbarang_1').val('');
@@ -175,7 +241,8 @@ $('#addmore').click(function(){
 
   $('#example tbody').on('click', '#edit', function(){
    // var id = $(this).attr('id');
-   var data = dataTable.row( $(this).parents('tr') ).data();
+   // let data = dataTable.row( $(this).parents('tr') ).data();
+   data = dataTable.row($(this).closest("tr")).data();
    var updId = data[0];
    $('#addmore').hide();
    $('#save').hide();
@@ -217,7 +284,7 @@ $('#addmore').click(function(){
         type: 'POST',
         data:{
           'updateTrans':1,
-          'updId':updId,
+          // 'updId':updId,
           'idbar':idbar,
           'ibm':ibm,
           'nm':nmbar,
@@ -282,8 +349,8 @@ $('#addmore').click(function(){
               	'delId': delId
                 },
                 success: function(response){
-                  // Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
-                  console.log(response)
+                  Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+                  console.log(response);
                   var table = $('#example').DataTable();
                   table.draw('page');
                 }
@@ -295,11 +362,7 @@ $('#addmore').click(function(){
           }
         }
       });
-
-
-  });
-
-
+  }); //end delete
 
   // delete data
   // $(document).on('click', '#hapus', function(){

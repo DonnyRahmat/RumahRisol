@@ -29,24 +29,24 @@ if(!isset($_SESSION['username']))
            id="sb3"
            data-shift=".shifted-content">
         <div class="sidebar-header image-overlay" data-image="">
-            <div class="avatar">
-                <img data-role="gravatar" data-email="sergey@pimenov.com.ua" >
+            <div style="position:absolute;height:64px;width:64px;background:#fff;color:#fff;border-radius:50%;top:16px;left:16px;overflow:hidden;text-align:center;border:2px solid #fff">
+                <img src="<?php echo base; ?>assets/img/ktp/<?php echo ($_SESSION['ktp']=="" ? "logo.png" : $_SESSION['ktp']); ?>" style="height:64px; width:64px;">
             </div>
-            <span class="title fg-orange">Metro 4 Components Library</span>
-            <span class="subtitle fg-orange"> 2018 © Sergey Pimenov</span>
+            <span class="title fg-orange">Rumah Risol d'rizzie</span>
+            <span class="subtitle fg-orange"><?php echo $_SESSION['fname'] ?></span>
         </div>
         <ul class="sidebar-menu">
           <ul class="v-menu">
             <li class="menu-title">Access Menu</li>
             <li><a href="<?php echo base ?>application/admin"><span class=""></span> Home</a></li>
             <?php
-              $sql = "SELECT U.fullname, R.nama_modul, R.link_modul, R.access, R.icon from t_rolemod R left join t_detil_role DR on DR.id_rolemod=R.id_rolemod left join t_role RO on RO.id_role=DR.id_role left join t_user U on RO.id_role=U.role where U.role=:idrole group by DR.id_detil_role";
+              $sql = "SELECT U.fullname, R.nama_modul, R.link_modul, R.icon from t_rolemod R left join t_detil_role DR on DR.id_rolemod=R.id_rolemod left join t_role RO on RO.id_role=DR.id_role left join t_user U on RO.id_role=U.role where U.role=:idrole group by DR.id_detil_role";
               $stmt = $pdo->prepare($sql);
               $stmt->bindParam(':idrole', $_SESSION['idrole']);
               $stmt->execute();
               $hasil = $stmt->fetchAll();
               foreach ($hasil as $h) {
-                echo "<li><a href=".base."".$h['link_modul']."><span class=".$h['icon']."></span>".$h['nama_modul']." <span class='badge inline bg-red fg-white'>".$h['access']."</span></a></li>";
+                echo "<li><a href=".base."".$h['link_modul']."><span class=".$h['icon']."></span>".$h['nama_modul']."</a></li>";
               }
             ?>
             <li class="menu-title">Akun</li>

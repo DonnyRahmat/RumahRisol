@@ -1,11 +1,16 @@
 <?php
   require_once('../../layout/header.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+  $u;
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
 ?>
 
 <div class="grid">
   <div class="row">
     <div class="cell-md-12 sm-12">
-      <h3>Laporan Transaksi</h3><br>
+      <h3>Laporan Produk</h3><br>
           <div class="window sm-12">
               <div class="window-caption">
                   <span class="icon mif-windows"></span>
@@ -84,13 +89,11 @@
                 <table id="getLap" class="table table-border cell-border">
                         <thead>
                             <tr>
-                                <th>No. Invoice</th>
-                                <th>Tgl Transaksi</th>
-                                <th>Total</th>
-                                <th>Jml Bayar</th>
-                                <th>Kembalian</th>
-                                <th>Diskon</th>
-                                <th>User</th>
+                                <th>Nama Produk</th>
+                                <th>Jml Produk Msk</th>
+                                <th bgcolor="#8FBC8F">Nominal Produk Masuk</th>
+                                <th>Stok Akhir</th>
+                                <th bgcolor="#E6E6FA">Nominal Stok Akhir</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

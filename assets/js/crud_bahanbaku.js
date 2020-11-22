@@ -59,23 +59,61 @@ $(document).ready(function(){
 }); //save data
 
   // delete data
-  $(document).on('click', '#hapus', function(){
-  	var id_barang = $(this).attr("data-id");
-  	$clicked_btn = $(this);
-  	$.ajax({
-  	  url: '../../../application/admin/stok/crud_bahanbaku.php',
-  	  type: 'GET',
-  	  data: {
-    	'delete': 1,
-    	'id_barang': id_barang
-      },
-      success: function(response){
-        Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
-        var table = $('#example').DataTable();
-        table.draw('page');
-      }
-  	});
-  }); //delete data
+  // $(document).on('click', '#hapus', function(){
+  // 	var id_barang = $(this).attr("data-id");
+  // 	$clicked_btn = $(this);
+  // 	$.ajax({
+  // 	  url: '../../../application/admin/stok/crud_bahanbaku.php',
+  // 	  type: 'GET',
+  // 	  data: {
+  //   	'delete': 1,
+  //   	'id_barang': id_barang
+  //     },
+  //     success: function(response){
+  //       Metro.notify.create("Delete Sukses", "Informasi", {cls: "success"});
+  //       var table = $('#example').DataTable();
+  //       table.draw('page');
+  //     }
+  // 	});
+  // }); //delete data
+
+  $('#example tbody').on('click', '#hapus_trans', function(){
+      var data = dataTable.row( $(this).parents('tr') ).data();
+      var delId = data[0];
+      // console.log(delId);
+      Metro.dialog.create({
+          title: "Warning",
+          content: "<div>Apakah anda yakin akan menghapus data ini?</div>",
+          actions: [
+              {
+                  caption: "Ya",
+                  cls: "js-dialog-close alert",
+                  onclick: function(){
+                      $.ajax({
+                        url: '../../../application/admin/stok/crud_bahanbaku.php',
+                        method:'post',
+                        data:{
+                          'delete':1,
+                          'delId':delId,
+                        },
+                        // dataType:'json',
+                        success:function(){
+                          Metro.notify.create("Hapus sukses", "Informasi", {cls: "success"});
+                          var table = $('#example').DataTable();
+                          table.draw('page');
+                        }
+                      })
+                  }
+              },
+              {
+                  caption: "Tidak",
+                  cls: "js-dialog-close",
+                  onclick: function(){
+                  }
+              }
+          ]
+      });
+  }); //end delete mod func
 
   //edit
   var edit_id;

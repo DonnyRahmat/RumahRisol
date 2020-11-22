@@ -1,6 +1,10 @@
 <?php
   require_once('../../layout/header.php');
-  // require_once('crud_bahanbaku.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+  $u;
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
 ?>
 
 <style media="screen">
@@ -111,6 +115,24 @@ input[type=number]::-webkit-inner-spin-button {
                   <span class="title">List Transaksi Masuk Bahan Baku </span>
               </div>
               <div class="window-content p-2">
+                <div class="row">
+                  <div class="cell-md-1">
+                    <b>Filter Lap.</b>
+                  </div>
+                  <div class="cell-md-3">
+                    <select name="filter_opt" id="filter_opt">
+                      <option value="">-</option>
+                      <option value="all">Semua Data</option>
+                      <option value="hr">Hari Ini</option>
+                      <option value="mg">Minggu Ini</option>
+                      <option value="bln">Bulan Ini</option>
+                    </select>
+                  </div>
+                  <div class="cell-md-1">
+                    <button class="button warning" type="button" name="button" id="filter_laporan">Filter</button>
+                  </div>
+                </div>
+                <hr>
                 <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>

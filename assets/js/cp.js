@@ -147,7 +147,6 @@ $(document).ready(function() {
      // alert('okeh');
      var nm = $('#nama_modul').val();
      var link = $('#link_modul').val();
-     var akses = $('#akses_modul').val();
      var icon = $('#icon_modul').val();
      $.ajax({
        url:'operate.php',
@@ -157,7 +156,6 @@ $(document).ready(function() {
          'saveMod':1,
          'nm':nm,
          'link':link,
-         'akses':akses,
          'icon':icon
        },
        success:function(json){
@@ -194,7 +192,6 @@ $(document).ready(function() {
               $('#idmod').val(updModul);
               $('#nama_modul').val(json[0].nm);
               $('#link_modul').val(json[0].lm);
-              $('#akses_modul').val(json[0].a);
               $('#icon_modul').val(json[0].i);
          } //end success
     }); //end ajax edit
@@ -204,7 +201,6 @@ $(document).ready(function() {
     var idUpdMod = $('#idmod').val();
     var nama_modul = $('#nama_modul').val();
     var link_modul = $('#link_modul').val();
-    var access = $('#akses_modul').val();
     var icon = $('#icon_modul').val();
     $.ajax({
       url:'operate.php',
@@ -214,7 +210,6 @@ $(document).ready(function() {
         'idUpdMod':idUpdMod,
         'nama_modul':nama_modul,
         'link_modul':link_modul,
-        'access':access,
         'icon':icon,
       },
       dataType:'json',
@@ -279,6 +274,7 @@ $(document).ready(function() {
 
   $('a.user').click(function(e) {
     var umod = this.id;
+    $('#idumod').val(umod);
     // console.log(umod);
        $.ajax({
          url:"umod.php",
@@ -290,30 +286,45 @@ $(document).ready(function() {
          success: function(json){
            $('table#hasil tbody').empty();
             // console.log(json);
-            $('table#hasil').append(json);
-             // var len = response.length;
-             // for(var i=0; i<len-1; i++){
-             //   var nm = response[i].nm_bar;
-             //   var msk = response[i].brg_msk;
-             //   var hbm = response[i].hbm;
-             //   var klr = response[i].brg_klr;
-             //   var hbk = response[i].hbk;
-             //   var stok = response[i].stok;
-             //   var ns = response[i].ns;
-             //   var tambah = "<tr class='data_lap'>" +
-             //                 "<td align='center'>" + nm + "</td>" +
-             //                 "<td align='center'>" + msk + "</td>" +
-             //                 "<td align='center' bgcolor='#8FBC8F'>" + hbm + "</td>" +
-             //                 "<td align='center'>" + klr + "</td>" +
-             //                 "<td align='center' bgcolor='#8FBC8F'>" + hbk + "</td>" +
-             //                 "<td align='center'>" + stok + "</td>" +
-             //                 "<td align='center' bgcolor='#E6E6FA'>" + ns + "</td>" +
-             //               "</tr>";
-             //     $("#getLap tbody").append(tambah);
-             // }
+            $('table#hasil tbody').append(json);
+            $('#simpanDataAksesModul').show();
          } //end success
        }); //end ajax
   });
+
+  $('table#hasil tfoot').on('click', '#simpanDataAksesModul', function(){
+    var idumod = $('#idumod').val();
+    var role = [];
+
+    $("input[type='checkbox']:checked").each(function(){
+        role.push($(this).val());
+    });
+
+    // console.log(role);
+    $.ajax({
+     url:"operate.php",
+     method:"post",
+     dataType:"JSON",
+     data:{
+       idumod:idumod,
+       roleUpd:role
+     },
+     success:function(json){
+       // console.log(json['msg']);
+       if (json['error']) {
+         for (i in json['error']) {
+           Metro.notify.create(json['error'][i], "Informasi", {cls: "alert"});
+         }
+       }
+       else{
+           Metro.notify.create(json['msg'], "Informasi", {cls: "success"});
+       }
+       for (i in json['get']) {
+         console.log(json['get'][i])
+       }
+     } //success
+   });  //ajax
+ }); // update hasil
 
   $('#batalDataModul').click(function(){
     $('#simpanDataModul').show();

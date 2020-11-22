@@ -1,6 +1,11 @@
 <?php
   require_once('../../layout/header.php');
   require_once('crud_produk.php');
+  $uri = $_SERVER['REQUEST_URI'];
+  $u = substr($uri, 12);
+  $u;
+
+  hak_akses($pdo, $_SESSION['idrole'], $u);
 ?>
 <link rel="stylesheet" href="../../../assets/css/jquery-ui.min.css">
 <div class="grid">
@@ -71,7 +76,7 @@
                 </thead>
                 <tbody>
                   <?php
-                    $q = "SELECT nama_produk, stok FROM `t_produk` WHERE stok<=stok_min";
+                    $q = "SELECT nama_produk, stok FROM `t_produk` WHERE stok<=stok_min limit 5";
                     $stmt = $pdo->prepare($q);
                     $stmt->execute();
                     $b=1;
